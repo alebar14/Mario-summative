@@ -9,6 +9,16 @@
 
 
 
+bool isButtonClicked(sf::FloatRect sprite, sf::Vector2f mp) {
+    if(sprite.contains(mp)) {
+
+        return true;
+    }
+    return false;
+
+
+}
+
 int main() {
 
     srand(time(NULL));
@@ -30,11 +40,29 @@ int main() {
 
 
 
+
     sf::RenderWindow window(sf::VideoMode(800,600),"My game");
     window.setFramerateLimit(60);
 
     //Add sound recordings
 
+
+    //*******************************************************
+
+    //Start button*******************************************
+
+    sf::Texture ArrowTX;
+    if(!ArrowTX.loadFromFile("Assets/Arrow.png")) {
+        return 0;
+    }
+    sf::Sprite Button;
+    Button.setTexture(ArrowTX);
+    Button.setPosition(0,0);
+//Button.scale(sf::Vector2f(200.f, 350.f));
+
+//*************************************************
+
+    //******************************************************
 
 //Make bird*************************************************
     sf::RectangleShape mario(sf::Vector2f(500.f, 300.f));
@@ -185,6 +213,23 @@ int main() {
 
 //Events....listen to computer events
         while(window.pollEvent(event)) {
+
+//Close Window*********************************************************************
+            if(event.type==sf::Event::Closed) {
+                window.close();
+            }
+//**********************************************************************************************************************
+
+
+//Button Pressed******************************************************************************************************
+            if(isButtonClicked(Button.getGlobalBounds(),sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                if(event.type== sf::Event::MouseButtonReleased && event.mouseButton.button== sf::Mouse::Left) {
+                    start=1;
+                    Button.setColor(sf::Color::Transparent);
+
+                }
+            }
+//*****************************************************************************************************************************
 //if keypressed
             if(event.type == sf::Event::KeyPressed) {
 
@@ -206,10 +251,10 @@ int main() {
 
                 }
                 if(event.key.code==19) {
-start=1;
+                    start=1;
                 }
 
-                  if(event.key.code==73&&event.key.code==72) {
+                if(event.key.code==73&&event.key.code==72) {
                     dir="left jump";
                 }
 
@@ -298,7 +343,7 @@ start=1;
             //angle -= 3;
             //Ypos+=2;
         }
-         if(dir=="left jump") {
+        if(dir=="left jump") {
             Ypos -=15;
             Xpos+=15;
         }
@@ -331,20 +376,20 @@ start=1;
 
         window.draw(BG);
         window.draw(FL);
+        window.draw(Button);
 
-        if(start==1){
-        for(int i=0; i<3; i++) {
-            window.draw(BigCLVector[i]);
-            window.draw(SmallCLVector[i]);
-        }
-
-        window.draw(Sun);
-        window.draw(Grant);
-        window.draw(Portal1);
-        window.draw(Portal2);
-        window.draw(Portal3);
-        window.draw(Portal4);
-        window.draw(lucky);
+        if(start==1) {
+            for(int i=0; i<3; i++) {
+                window.draw(BigCLVector[i]);
+                window.draw(SmallCLVector[i]);
+            }
+            window.draw(Sun);
+            window.draw(Grant);
+            window.draw(Portal1);
+            window.draw(Portal2);
+            window.draw(Portal3);
+            window.draw(Portal4);
+            window.draw(lucky);
         }
 
 
